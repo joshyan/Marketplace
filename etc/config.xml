@@ -1,0 +1,293 @@
+<?xml version="1.0"?>
+
+<config>
+	<modules>
+		<Junaidbhura_Jbmarketplace>
+			<version>1.2.5</version>
+		</Junaidbhura_Jbmarketplace>
+	</modules>
+	
+	<global>
+		<helpers>
+			<jbmarketplace>
+				<class>Junaidbhura_Jbmarketplace_Helper</class>
+			</jbmarketplace>
+		</helpers>
+		
+		<models>
+			<jbmarketplace>
+				<class>Junaidbhura_Jbmarketplace_Model</class>
+				<resourceModel>jbmarketplace_mysql4</resourceModel>
+			</jbmarketplace>
+			
+			<jbmarketplace_mysql4>
+				<class>Junaidbhura_Jbmarketplace_Model_Mysql4</class>
+				<entities>		  
+					<jbmarketplaceproducts>
+						<table>junaidbhura_jbmarketplace_products</table>
+					</jbmarketplaceproducts>	
+					<jbmarketplaceorders>
+						<table>junaidbhura_jbmarketplace_orders</table>
+					</jbmarketplaceorders>					
+					<jbmarketplacevendors>
+						<table>junaidbhura_jbmarketplace_vendors</table>
+					</jbmarketplacevendors>		
+					<jbmarketplacemessages>
+						<table>junaidbhura_jbmarketplace_messages</table>
+					</jbmarketplacemessages>						
+				</entities>
+			</jbmarketplace_mysql4>		
+			
+			<catalog>
+				<rewrite>
+					<product>Junaidbhura_Jbmarketplace_Model_Product</product>
+					<!-- Override Mage_Catalog_Model_Convert_Adapter_Product -->
+	                <convert_adapter_product>Junaidbhura_Jbmarketplace_Model_Convert_Adapter_Product</convert_adapter_product>
+				</rewrite>
+			</catalog>
+
+			<dataflow>
+				<rewrite>
+					<convert_parser_csv>Junaidbhura_Jbmarketplace_Model_Convert_Parser_Csv</convert_parser_csv>
+				</rewrite>
+			</dataflow>
+
+			<admin>
+				<rewrite>
+					<user>Junaidbhura_Jbmarketplace_Model_Vendorlogin</user>
+				</rewrite>
+			</admin>
+		</models>
+		
+		<blocks>
+			<catalog>
+				<rewrite>
+					<product_list_toolbar>Junaidbhura_Jbmarketplace_Block_Product_List_Toolbar</product_list_toolbar>
+				</rewrite>
+			</catalog>
+		</blocks>
+
+		<resources>
+			<jbmarketplace_setup>
+				<setup>
+					<module>Junaidbhura_Jbmarketplace</module>
+				</setup>
+				
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</jbmarketplace_setup>
+			
+			<jbmarketplace_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</jbmarketplace_write>
+			
+			<jbmarketplace_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</jbmarketplace_read>
+		</resources>
+		
+		<template>
+			<email>
+				<junaidbhura_jbmarketplace_email>
+					<label>Marketplace Vendor New Order Email</label>
+					<file>jbmarketplace/vendor_order_new.html</file>
+					<type>html</type>
+				</junaidbhura_jbmarketplace_email>
+				<junaidbhura_jbmarketplace_shippedemail>
+					<label>Marketplace Vendor Order Shipped Email</label>
+					<file>jbmarketplace/vendor_order_shipped.html</file>
+					<type>html</type>
+				</junaidbhura_jbmarketplace_shippedemail>
+			</email>
+		</template>
+		
+		<events>
+			<sales_order_place_after>
+				<observers>
+					<junaidbhura_jbmarketplace_orderobserver>
+						<type>singleton</type>
+						<class>Junaidbhura_Jbmarketplace_Model_Orderobserver</class>
+						<method>orderPlaced</method>
+					</junaidbhura_jbmarketplace_orderobserver>
+				</observers>			
+			</sales_order_place_after>
+			<sales_order_save_after>
+				<observers>
+					<junaidbhura_jbmarketplace_orderobserver>
+						<type>singleton</type>
+						<class>Junaidbhura_Jbmarketplace_Model_Orderobserver</class>
+						<method>orderSaved</method>
+					</junaidbhura_jbmarketplace_orderobserver>
+				</observers>
+			</sales_order_save_after>
+		</events>
+
+		<blocks>
+            <jbmarketplace>
+                <class>Junaidbhura_Jbmarketplace_Block</class>
+            </jbmarketplace>
+        </blocks>
+
+        <rewrite>
+	 		<vendorproducts_url>
+	             <from><![CDATA[/stores\/(.*)/]]></from>
+	             <to><![CDATA[marketplace/vendor/productlist/name/$1/]]></to>
+	             <complete>1</complete>
+	        </vendorproducts_url>
+	 		<vendorprofile_url>
+	             <from><![CDATA[/store-profile\/(.*)/]]></from>
+	             <to><![CDATA[marketplace/vendor/profile/name/$1/]]></to>
+	             <complete>1</complete>
+	        </vendorprofile_url>
+	 		<vendorlist_url>
+	             <from><![CDATA[/store-list/]]></from>
+	             <to><![CDATA[marketplace/vendor/list/]]></to>
+	             <complete>1</complete>
+	        </vendorlist_url>
+    	</rewrite>
+
+	</global>
+	
+	<default>
+		<jbmarketplace>
+			<jbmarketplace>
+				<vendors_role></vendors_role>
+				<notify_vendors>1</notify_vendors>
+				<notify_order_status>processing</notify_order_status>
+				<email_template></email_template>
+				<email_from_name>My Store</email_from_name>
+				<email_from>my@store.com</email_from>
+			</jbmarketplace>
+		</jbmarketplace>
+	</default>
+	
+	<adminhtml>
+		<events>
+			<catalog_product_collection_load_before>
+				<observers>
+					<junaidbhura_jbmarketplace_productobserver>
+						<type>singleton</type>
+						<class>Junaidbhura_Jbmarketplace_Model_Productobserver</class>
+						<method>limitUsers</method>
+					</junaidbhura_jbmarketplace_productobserver>
+				</observers>
+			</catalog_product_collection_load_before>
+			
+			<catalog_product_save_after>
+				<observers>
+					<junaidbhura_jbmarketplace_productobserver>
+						<type>singleton</type>
+						<class>Junaidbhura_Jbmarketplace_Model_Productobserver</class>
+						<method>newProduct</method>
+					</junaidbhura_jbmarketplace_productobserver>
+				</observers>
+			</catalog_product_save_after>
+
+			<catalog_product_save_before>
+				<observers>
+					<junaidbhura_jbmarketplace_productobserver>
+						<type>singleton</type>
+						<class>Junaidbhura_Jbmarketplace_Model_Productobserver</class>
+						<method>setWarehouse</method>
+					</junaidbhura_jbmarketplace_productobserver>
+				</observers>
+			</catalog_product_save_before>
+
+			<catalog_product_edit_action>
+				<observers>
+					<junaidbhura_jbmarketplace_productobserver>
+						<type>singleton</type>
+						<class>Junaidbhura_Jbmarketplace_Model_Productobserver</class>
+						<method>editProduct</method>
+					</junaidbhura_jbmarketplace_productobserver>
+				</observers>
+			</catalog_product_edit_action>
+			
+			<catalog_product_delete_before>
+				<observers>
+					<junaidbhura_jbmarketplace_productobserver>
+						<type>singleton</type>
+						<class>Junaidbhura_Jbmarketplace_Model_Productobserver</class>
+						<method>deleteProduct</method>
+					</junaidbhura_jbmarketplace_productobserver>
+				</observers>
+			</catalog_product_delete_before>
+
+			<admin_user_save_after>
+	            <observers>
+	                <junaidbhura_jbmarketplace_userobserver>
+	                    <type>singleton</type>
+	                    <class>Junaidbhura_Jbmarketplace_Model_Userobserver</class>
+	                    <method>saveVendor</method>
+	                </junaidbhura_jbmarketplace_userobserver>
+	            </observers>
+	        </admin_user_save_after>
+
+		</events>
+		
+		<acl>
+			<resources>
+				<admin>
+					<children>
+						<system>
+							<children>
+								<config>
+									<children>
+										<jbmarketplace translate="title" module="jbmarketplace">
+											<title>Super Simple Marketplace</title>
+										</jbmarketplace>
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+
+		<layout>
+			<updates>
+				<jbmarketplace>
+					<file>jbmarketplace.xml</file>
+				</jbmarketplace>
+			</updates>
+		</layout>
+	</adminhtml>
+	
+	<admin>
+		<routers>
+			<jbmarketplace>
+				<use>admin</use>
+				<args>
+					<module>Junaidbhura_Jbmarketplace</module>
+					<frontName>jbmarketplace</frontName>
+				</args>
+			</jbmarketplace>
+		</routers>
+	</admin>
+
+	<frontend>
+		<routers>
+			<jbmarketplace>
+				<use>standard</use>
+				<args>
+					<module>Junaidbhura_Jbmarketplace</module>
+					<frontName>marketplace</frontName>
+				</args>
+			</jbmarketplace>
+		</routers>
+		<layout>
+            <updates>
+                <jbmarketplace>
+                    <file>jbmarketplace.xml</file>
+                </jbmarketplace>
+            </updates>
+        </layout>
+	</frontend>
+
+</config> 

@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+* @category   Bc
+* @package    Bc_Font
+* @author     ModuleCreator
+* @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+*/
+-->
+<config>
+    <menu>
+        <vendor_dashboard translate="title" module="jbmarketplace">
+            <title>Dashboard</title>
+            <sort_order>10</sort_order>
+            <action>jbmarketplace/adminhtml_dashboard</action>
+        </vendor_dashboard>
+        <jbmarketplace module="jbmarketplace">
+            <title>Marketplace</title>
+            <sort_order>81</sort_order>               
+            <children>
+                <vendor_orders module="jbmarketplace">
+                    <title>Manage Orders</title>
+                    <sort_order>5</sort_order>
+                    <action>jbmarketplace/adminhtml_orders</action>
+                </vendor_orders>
+                <vendors module="jbmarketplace" translate="title">
+                    <title>Manage Sellers</title>
+                    <sort_order>10</sort_order>
+                    <action>jbmarketplace/adminhtml_vendors</action>
+                </vendors>
+                <vendor_store module="jbmarketplace" translate="title">
+                    <title>Manage Store</title>
+                    <sort_order>15</sort_order>
+                    <action>jbmarketplace/adminhtml_store</action>
+                </vendor_store>
+                <vendor_messages module="jbmarketplace" translate="title">
+                    <title>Message Inbox</title>
+                    <sort_order>20</sort_order>
+                    <action>jbmarketplace/adminhtml_messages</action>
+                </vendor_messages>
+                <vendor_reports module="jbmarketplace" translate="title">
+                    <title>Reports</title>
+                    <sort_order>25</sort_order>
+                    <action>jbmarketplace/adminhtml_reports</action>
+                </vendor_reports>
+                <vendor_import module="jbmarketplace" translate="title">
+                    <title>Import Products</title>
+                    <sort_order>30</sort_order>
+                    <action>jbmarketplace/adminhtml_import</action>
+                </vendor_import>
+            </children>
+        </jbmarketplace>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <vendor_dashboard module="jbmarketplace" translate="title">
+                        <title>Vendor Dashboard</title>
+                        <sort_order>10</sort_order>
+                    </vendor_dashboard>
+
+                    <jbmarketplace translate="title" module="dropcommon">
+                        <title>Marketplace</title>
+                        <sort_order>81</sort_order>
+                        <children>
+                            <vendor_orders translate="title">
+                                <title>Manage Orders</title>
+                                <sort_order>5</sort_order>
+                            </vendor_orders>
+                            <vendors translate="title">
+                                <title>Manage Sellers</title>
+                                <sort_order>10</sort_order>
+                            </vendors>
+                            <vendor_store translate="title">
+                                <title>Manage Store</title>
+                                <sort_order>15</sort_order>
+                            </vendor_store>
+                            <vendor_messages translate="title">
+                                <title>Message Inbox</title>
+                                <sort_order>20</sort_order>
+                            </vendor_messages>
+                            <vendor_reports translate="title">
+                                <title>Reports</title>
+                                <sort_order>25</sort_order>
+                            </vendor_reports>
+                            <vendor_import translate="title">
+                                <title>Import Products</title>
+                                <sort_order>30</sort_order>
+                            </vendor_import>
+                        </children>
+                    </jbmarketplace>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <layout>
+        <updates>
+            <jbmarketplace>
+                <file>jbmarketplace.xml</file>
+            </jbmarketplace>
+        </updates>
+    </layout>
+</config>
